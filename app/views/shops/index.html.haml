@@ -1,0 +1,190 @@
+#main.loading
+  %header
+    %a.shop{:href => "/"} Stripe Payments Demo
+    %a.github{:href => "https://github.com/stripe/stripe-payments-demo"} View on GitHub
+  #checkout
+    #payment-request
+      #payment-request-button
+    %form#payment-form{:action => "/orders", :method => "POST"}
+      %p.instruction Complete your shipping and payment details below
+      %section
+        %h2 Shipping &amp; Billing Information
+        %fieldset.with-state
+          %label
+            %span Name
+            %input.field{:name => "name", :placeholder => "Jenny Rosen", :required => ""}/
+          %label
+            %span Email
+            %input.field{:name => "email", :placeholder => "jenny@example.com", :required => "", :type => "email"}/
+          %label
+            %span Address
+            %input.field{:name => "address", :placeholder => "185 Berry Street Suite 550"}/
+          %label
+            %span City
+            %input.field{:name => "city", :placeholder => "San Francisco"}/
+          %label.state
+            %span State
+            %input.field{:name => "state", :placeholder => "CA"}/
+          %label.zip
+            %span ZIP
+            %input.field{:name => "postal_code", :placeholder => "94107"}/
+          %label.select
+            %span Country
+            #country.field.US
+              %select{:name => "country"}
+                %option{:value => "AU"} Australia
+                %option{:value => "AT"} Austria
+                %option{:value => "BE"} Belgium
+                %option{:value => "BR"} Brazil
+                %option{:value => "CA"} Canada
+                %option{:value => "CN"} China
+                %option{:value => "DK"} Denmark
+                %option{:value => "FI"} Finland
+                %option{:value => "FR"} France
+                %option{:value => "DE"} Germany
+                %option{:value => "HK"} Hong Kong
+                %option{:value => "IE"} Ireland
+                %option{:value => "IT"} Italy
+                %option{:value => "JP"} Japan
+                %option{:value => "LU"} Luxembourg
+                %option{:value => "MX"} Mexico
+                %option{:value => "NL"} Netherlands
+                %option{:value => "NZ"} New Zealand
+                %option{:value => "NO"} Norway
+                %option{:value => "PT"} Portugal
+                %option{:value => "SG"} Singapore
+                %option{:value => "ES"} Spain
+                %option{:value => "SE"} Sweden
+                %option{:value => "CH"} Switzerland
+                %option{:value => "GB"} United Kingdom
+                %option{:selected => "selected", :value => "US"} United States
+        %p.tip Select another country to see different payment options.
+      %section
+        %h2 Payment Information
+        %nav#payment-methods
+          %ul
+            %li
+              %input#payment-card{:checked => "checked", :name => "payment", :type => "radio", :value => "card"}/
+              %label{:for => "payment-card"} Card
+            %li
+              %input#payment-ach_credit_transfer{:checked => "checked", :name => "payment", :type => "radio", :value => "ach_credit_transfer"}/
+              %label{:for => "payment-ach_credit_transfer"} Bank Transfer
+            %li
+              %input#payment-alipay{:name => "payment", :type => "radio", :value => "alipay"}/
+              %label{:for => "payment-alipay"} Alipay
+            %li
+              %input#payment-bancontact{:name => "payment", :type => "radio", :value => "bancontact"}/
+              %label{:for => "payment-bancontact"} Bancontact
+            %li
+              %input#payment-eps{:name => "payment", :type => "radio", :value => "eps"}/
+              %label{:for => "payment-eps"} EPS
+            %li
+              %input#payment-ideal{:name => "payment", :type => "radio", :value => "ideal"}/
+              %label{:for => "payment-ideal"} iDEAL
+            %li
+              %input#payment-giropay{:name => "payment", :type => "radio", :value => "giropay"}/
+              %label{:for => "payment-giropay"} Giropay
+            %li
+              %input#payment-multibanco{:name => "payment", :type => "radio", :value => "multibanco"}/
+              %label{:for => "payment-multibanco"} Multibanco
+            %li
+              %input#payment-sepa_debit{:name => "payment", :type => "radio", :value => "sepa_debit"}/
+              %label{:for => "payment-sepa_debit"} SEPA Direct Debit
+            %li
+              %input#payment-sofort{:name => "payment", :type => "radio", :value => "sofort"}/
+              %label{:for => "payment-sofort"} SOFORT
+            %li
+              %input#payment-wechat{:name => "payment", :type => "radio", :value => "wechat"}/
+              %label{:for => "payment-wechat"} WeChat Pay
+        .payment-info.card.visible
+          %fieldset
+            %label
+              %span Card
+              #card-element.field
+        .payment-info.sepa_debit
+          %fieldset
+            %label
+              %span IBAN
+              #iban-element.field
+          %p.notice
+            By providing your IBAN and confirming this payment, you’re authorizing Payments Demo and Stripe, our payment
+            provider, to send instructions to your bank to debit your account. You’re entitled to a refund under the terms
+            and conditions of your agreement with your bank.
+        .payment-info.ideal
+          %fieldset
+            %label
+              %span iDEAL Bank
+              #ideal-bank-element.field
+        .payment-info.redirect
+          %p.notice You’ll be redirected to the banking site to complete your payment.
+        .payment-info.receiver
+          %p.notice Payment information will be provided after you place the order.
+        .payment-info.wechat
+          #wechat-qrcode
+          %p.notice Click the button below to generate a QR code for WeChat.
+      %button{:type => "submit"} Pay
+    #card-errors.element-errors
+    #iban-errors.element-errors
+  #confirmation
+    .status.processing
+      %h1 Completing your order…
+      %p We’re just waiting for the confirmation from your bank… This might take a moment but feel free to close this page.
+      %p We’ll send your receipt via email shortly.
+    .status.success
+      %h1 Thanks for your order!
+      %p Woot! You successfully made a payment with Stripe.
+      %p.note We just sent your receipt to your email address, and your items will be on their way shortly.
+    .status.receiver
+      %h1 Thanks! One last step!
+      %p Please make a payment using the details below to complete your order.
+      .info
+    .status.error
+      %h1 Oops, payment failed.
+      %p It looks like your order could not be paid at this time. Please try again or select a different payment option.
+      %p.error-message
+#summary
+  %header
+    %h1 Order Summary
+  #order-items
+  #order-total
+    .line-item.subtotal
+      %p.label Subtotal
+      %p.price{"data-subtotal" => ""}
+    .line-item.shipping
+      %p.label Shipping
+      %p.price Free
+    .line-item.demo
+      #demo
+        %p.label Demo in test mode
+        %p.note You can copy and paste the following test cards to trigger different scenarios:
+        %table.note
+          %tr
+            %td Default US card:
+            %td.card-number
+              4242
+              %span>
+              4242
+              %span>
+              4242
+              %span>
+              4242
+          %tr
+            %td
+              %a{:href => "https://stripe.com/guides/strong-customer-authentication", :target => "_blank"} 3D Secure auth
+              required:
+            %td.card-number
+              4000
+              %span>
+              0000
+              %span>
+              0000
+              %span>
+              3063
+        %p.note
+          See the
+          %a{:href => "https://stripe.com/docs/testing#cards", :target => "_blank"} docs
+          for a full list of test cards.
+          Non-card payments will redirect to test pages.
+    .line-item.total
+      %p.label Total
+      %p.price{"data-total" => ""}
